@@ -1,0 +1,46 @@
+package tabuleiro;
+
+public class Tabuleiro {
+    private int linhas;
+    private int colunas;
+    private Peca[][] pecas;
+
+    public Tabuleiro(int linhas, int colunas ) {
+        this.linhas = linhas;
+        this.colunas = colunas;
+        pecas = new Peca[linhas][colunas];
+    }
+
+    public void colocaPeca(Peca novaPeca, Posicao posicao){
+        
+        pecas[posicao.getLinha()][posicao.getColuna()] = novaPeca;
+        novaPeca.posicao =  posicao;
+    }
+    
+    public Peca pecaTabuleiro( Integer linha, Integer coluna){
+        return pecas[linha][coluna];
+    }
+    
+    public Peca pecaTabuleiro( Posicao pos){
+        return pecas[pos.getLinha()][pos.getColuna()];
+    }
+    
+    public int getLinhas() {
+        return linhas;
+    }
+
+    public void setLinhas(int linhas) {
+        this.linhas = linhas;
+    }
+
+    public int getColunas() {
+        return colunas;
+    }
+
+    public void setColunas(int colunas) {
+        this.colunas = colunas;
+    }
+    
+    
+    
+}
