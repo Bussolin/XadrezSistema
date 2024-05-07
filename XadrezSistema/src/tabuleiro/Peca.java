@@ -28,6 +28,11 @@ public class Peca {
     }
     */
 
+    @Override
+    public String toString() {
+        return "Peca{" + "posicao=" + posicao + ", tabuleiro=" + tabuleiro + '}';
+    }
+
     protected Tabuleiro getTabuleiro() {
         return tabuleiro;
     }

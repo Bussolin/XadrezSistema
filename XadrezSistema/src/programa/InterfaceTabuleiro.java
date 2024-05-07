@@ -1,9 +1,10 @@
 package programa;
 
+import java.util.InputMismatchException;
+import java.util.Scanner;
 import jogo.Cor;
 import jogo.PecaXadrez;
-
-
+import jogo.PosicaoXadrez;
 
 public class InterfaceTabuleiro {
     
@@ -51,4 +52,16 @@ public class InterfaceTabuleiro {
         }
         System.out.print(" ");
     }
+    
+    public static PosicaoXadrez lerPosicao( Scanner scan ){
+        try{
+            String s = scan.nextLine();
+            char coluna = s.charAt(0);
+            Integer linha = Integer.valueOf( s.substring(1) );
+            return new PosicaoXadrez( coluna, linha );
+        }catch( RuntimeException e){
+            throw new InputMismatchException("Erro ao ler posicao: valores validos sao de a1 ate h8");
+        }
+    }
+    
 }

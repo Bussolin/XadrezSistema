@@ -1,7 +1,11 @@
 package jogo;
 
+import jogo.excecoes.ExcecaoXadrez;
 import jogo.pecas.Torre;
+import tabuleiro.Peca;
+import tabuleiro.Posicao;
 import tabuleiro.Tabuleiro;
+import tabuleiro.excecoes.ExcecaoTabuleiro;
 
 public class PartidaXadrez {
     private Tabuleiro tabuleiro;
@@ -16,6 +20,28 @@ public class PartidaXadrez {
         colocaNovaPeca('h', 1 ,new Torre(Cor.BRANCA, tabuleiro) );
         colocaNovaPeca('a', 8 ,new Torre(Cor.PRETA, tabuleiro) );
         colocaNovaPeca('h', 8 ,new Torre(Cor.PRETA, tabuleiro) );
+    }
+    
+    public PecaXadrez movimentaPecaXadrez( PosicaoXadrez posicaoOrigem, PosicaoXadrez posicaoDestino){
+        Posicao origem = posicaoOrigem.conversaoPosicao();
+        Posicao destino = posicaoDestino.conversaoPosicao();
+        validaPosicaoOrigem( posicaoOrigem.conversaoPosicao() );
+        Peca pecaCapturada = fazMovimento( origem, destino );
+        
+        return (PecaXadrez) pecaCapturada;
+    }
+    
+    private Peca fazMovimento( Posicao origem, Posicao destino){
+        Peca p = tabuleiro.removePeca(origem);
+        Peca capturada = tabuleiro.removePeca(destino);
+        tabuleiro.colocaPeca(p, destino);
+        return capturada;
+    }
+    
+    private void validaPosicaoOrigem( Posicao origem ){
+        if( !tabuleiro.existePecaNaPosicao(origem ) ){
+            throw new ExcecaoTabuleiro("Erro Tabuleiro: Nao existe peca na posicao de origem");
+        }
     }
     
     private void colocaNovaPeca( char coluna, int linha, PecaXadrez peca){

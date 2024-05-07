@@ -16,8 +16,18 @@ public class Tabuleiro {
         pecas = new Peca[linhas][colunas];
     }
 
+    public Peca removePeca( Posicao pos ){
+        if( existePecaNaPosicao( pos ) ){
+            Peca p = pecaTabuleiro( pos );
+            p.posicao = null;
+            pecas[ pos.getLinha() ][ pos.getColuna() ] = null;
+            return p;
+        }
+        return null;
+    }
+    
     public void colocaPeca(Peca novaPeca, Posicao posicao){
-        if( existePecaNaPosicao(posicao) ){
+        if( existePecaNaPosicao( posicao ) ){
             throw new ExcecaoTabuleiro("Erro Tabuleiro: Ja existe peca nessa posicao");
         }
         pecas[posicao.getLinha()][posicao.getColuna()] = novaPeca;
@@ -37,7 +47,7 @@ public class Tabuleiro {
         return pecas[pos.getLinha()][pos.getColuna()];
     }
     
-        public Boolean posicaoExiste(Posicao pos){
+    public Boolean posicaoExiste(Posicao pos){
         return (pos.getLinha() <= linhas || pos.getLinha() > 0)
                 && (pos.getColuna() <= colunas || pos.getColuna() > 0);
     }
@@ -50,7 +60,7 @@ public class Tabuleiro {
     public Boolean existePecaNaPosicao( Posicao posicao ){
         if( !posicaoExiste(posicao)){
             throw new ExcecaoTabuleiro("Erro Tabuleiro: Posicao nao existe");
-        }  
+        }
         return pecaTabuleiro(posicao) != null;
     }
     
@@ -61,5 +71,4 @@ public class Tabuleiro {
     public int getColunas() {
         return colunas;
     }
-
 }
