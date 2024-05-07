@@ -1,7 +1,6 @@
 package jogo;
 
 import jogo.pecas.Torre;
-import tabuleiro.Posicao;
 import tabuleiro.Tabuleiro;
 
 public class PartidaXadrez {
@@ -12,8 +11,15 @@ public class PartidaXadrez {
         organizacaoInicial();
     }
     
-    public void organizacaoInicial(){
-        tabuleiro.colocaPeca(new Torre(Cor.PRETA, tabuleiro), new Posicao(2, 1) );
+    public final void organizacaoInicial(){
+        colocaNovaPeca('a', 1 ,new Torre(Cor.BRANCA, tabuleiro) );
+        colocaNovaPeca('h', 1 ,new Torre(Cor.BRANCA, tabuleiro) );
+        colocaNovaPeca('a', 8 ,new Torre(Cor.PRETA, tabuleiro) );
+        colocaNovaPeca('h', 8 ,new Torre(Cor.PRETA, tabuleiro) );
+    }
+    
+    private void colocaNovaPeca( char coluna, int linha, PecaXadrez peca){
+        tabuleiro.colocaPeca(peca, new PosicaoXadrez(coluna, linha).conversaoPosicao() );
     }
     
     public PecaXadrez[][] getPecas(){

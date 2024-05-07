@@ -9,7 +9,7 @@ public class Tabuleiro {
 
     public Tabuleiro(int linhas, int colunas ) {
         if( linhas < 1 || colunas < 1){
-            throw new ExcecaoTabuleiro("Impossivel um tabuleiro ter linha ou colunas menor que zero!");
+            throw new ExcecaoTabuleiro("Erro Tabuleiro: necessário ter linhas e/ou colunas maior que zero!");
         }
         this.linhas = linhas;
         this.colunas = colunas;
@@ -17,49 +17,49 @@ public class Tabuleiro {
     }
 
     public void colocaPeca(Peca novaPeca, Posicao posicao){
-        if( !posicaoExiste(posicao)){
-            throw new ExcecaoTabuleiro("Posicao nao existe");
-        }  
         if( existePecaNaPosicao(posicao) ){
-            throw new ExcecaoTabuleiro("Ja existe peca nessa posicao");
+            throw new ExcecaoTabuleiro("Erro Tabuleiro: Ja existe peca nessa posicao");
         }
         pecas[posicao.getLinha()][posicao.getColuna()] = novaPeca;
         novaPeca.posicao =  posicao;
     }
-    
-    public Boolean posicaoExiste(Posicao pos){
-        return (pos.getLinha() >= linhas || pos.getLinha() < 0)
-                && (pos.getColuna() >= colunas || pos.getColuna()< 0);
-    }
-    
-    public Boolean existePecaNaPosicao( Posicao posicao ){
-        return pecaTabuleiro(posicao) != null;
-    }
-    
-    public Peca pecaTabuleiro( Integer linha, Integer coluna){
+    public Peca pecaTabuleiro( Integer linha, Integer coluna){    
+        if( !posicaoExiste(linha, coluna)){
+            throw new ExcecaoTabuleiro("Erro Tabuleiro: Posicao nao existe");
+        }
         return pecas[linha][coluna];
     }
     
     public Peca pecaTabuleiro( Posicao pos){
+        if( !posicaoExiste(pos)){
+            throw new ExcecaoTabuleiro("Erro Tabuleiro: Posicao nao existe");
+        }
         return pecas[pos.getLinha()][pos.getColuna()];
+    }
+    
+        public Boolean posicaoExiste(Posicao pos){
+        return (pos.getLinha() <= linhas || pos.getLinha() > 0)
+                && (pos.getColuna() <= colunas || pos.getColuna() > 0);
+    }
+    
+    public Boolean posicaoExiste(Integer linha, Integer coluna){
+        return (linha <= linhas || linha > 0)
+                && (coluna <= colunas || coluna > 0);
+    }
+    
+    public Boolean existePecaNaPosicao( Posicao posicao ){
+        if( !posicaoExiste(posicao)){
+            throw new ExcecaoTabuleiro("Erro Tabuleiro: Posicao nao existe");
+        }  
+        return pecaTabuleiro(posicao) != null;
     }
     
     public int getLinhas() {
         return linhas;
     }
 
-    public void setLinhas(int linhas) {
-        this.linhas = linhas;
-    }
-
     public int getColunas() {
         return colunas;
     }
 
-    public void setColunas(int colunas) {
-        this.colunas = colunas;
-    }
-    
-    
-    
 }
