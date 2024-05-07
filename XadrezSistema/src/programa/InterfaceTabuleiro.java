@@ -47,7 +47,7 @@ public class InterfaceTabuleiro {
                 System.out.print(ANSI_WHITE + peca + ANSI_RESET);
             }
             else {
-                System.out.print(ANSI_BLACK + peca + ANSI_RESET);
+                System.out.print(ANSI_BLUE + peca + ANSI_RESET);
             }
         }
         System.out.print(" ");
@@ -63,5 +63,11 @@ public class InterfaceTabuleiro {
             throw new InputMismatchException("Erro ao ler posicao: valores validos sao de a1 ate h8");
         }
     }
+    
+        // https://stackoverflow.com/questions/2979383/java-clear-the-console
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    } 
     
 }
