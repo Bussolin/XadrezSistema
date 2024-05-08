@@ -31,23 +31,36 @@ public class InterfaceTabuleiro {
         for( int i = 0; i < px.length; i++ ){
             System.out.print( 8 - i + " " );
             for( int j = 0; j < px.length; j++ ){
-                imprimePeca( px[ i ][ j ] );
+                imprimePeca( px[ i ][ j ], false );
             }
             System.out.println();
         }
         System.out.println("  a b c d e f g h");
     }
     
-    public static void imprimePeca( PecaXadrez peca ){
+    public static void imprimeTabuleiro( PecaXadrez[][] px, boolean[][] movimentosPossiveis ){
+        for( int i = 0; i < px.length; i++ ){
+            System.out.print( 8 - i + " " );
+            for( int j = 0; j < px.length; j++ ){
+                imprimePeca( px[ i ][ j ],  movimentosPossiveis[i][j] );
+            }
+            System.out.println();
+        }
+        System.out.println("  a b c d e f g h");
+    }
+    
+    public static void imprimePeca( PecaXadrez peca, boolean lancePossivel ){
+        if( lancePossivel){
+            System.out.print(ANSI_GREEN_BACKGROUND);
+        }
+        
         if (peca == null) {
-            System.out.print("-");
+            System.out.print("-" + ANSI_RESET );
         }
         else {
-            if (peca.getCor()== Cor.BRANCA) {
-                System.out.print(ANSI_WHITE + peca + ANSI_RESET);
-            }
-            else {
-                System.out.print(ANSI_BLUE + peca + ANSI_RESET);
+            switch(peca.getCor()){
+                case Cor.BRANCA -> System.out.print(ANSI_WHITE + peca + ANSI_RESET);
+                case Cor.PRETA -> System.out.print(ANSI_BLUE + peca + ANSI_RESET);
             }
         }
         System.out.print(" ");

@@ -22,6 +22,10 @@ public class main {
                 System.out.println("Origem: ");
                 PosicaoXadrez origem = InterfaceTabuleiro.lerPosicao(scan);
 
+                boolean[][] possiveisMovimentos = jogo.possiveisMovimentos(origem);
+                InterfaceTabuleiro.clearScreen();
+                InterfaceTabuleiro.imprimeTabuleiro(jogo.getPecas(), possiveisMovimentos);
+                
                 System.out.println();
                 System.out.println("Destino: ");
                 PosicaoXadrez destino = InterfaceTabuleiro.lerPosicao(scan);

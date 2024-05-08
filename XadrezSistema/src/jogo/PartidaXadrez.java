@@ -26,6 +26,12 @@ public class PartidaXadrez {
         colocaNovaPeca('h', 8 ,new Torre(Cor.PRETA, tabuleiro) );
     }
     
+    public boolean[][] possiveisMovimentos( PosicaoXadrez origem ){
+        Posicao posicao = origem.conversaoPosicao();
+        validaPosicaoOrigem( posicao );
+        return tabuleiro.pecaTabuleiro(posicao).movimentosPossiveis();
+    }
+    
     public PecaXadrez movimentaPecaXadrez( PosicaoXadrez posicaoOrigem, PosicaoXadrez posicaoDestino){
         Posicao origem = posicaoOrigem.conversaoPosicao();
         Posicao destino = posicaoDestino.conversaoPosicao();
