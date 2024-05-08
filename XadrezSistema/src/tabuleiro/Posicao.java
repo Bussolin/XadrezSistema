@@ -14,6 +14,11 @@ public class Posicao {
         return linha + ", " + coluna; 
     }
     
+    public void setValores( Integer linha, Integer coluna){
+        this.linha = linha;
+        this.coluna = coluna;
+    }
+    
     public int getLinha() {
         return linha;
     }
@@ -26,7 +31,7 @@ public class Posicao {
         return coluna;
     }
 
-    public void setColuna(char coluna) {
+    public void setColuna(int coluna) {
         this.coluna = coluna;
     }
     

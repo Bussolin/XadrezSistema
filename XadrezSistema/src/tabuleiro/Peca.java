@@ -1,32 +1,30 @@
 package tabuleiro;
 
-public class Peca {
+public abstract class Peca {
     protected Posicao posicao;
     private Tabuleiro tabuleiro;
 
-    public Peca( Tabuleiro tabuleiro) {
+    public Peca( Tabuleiro tabuleiro ) {
         this.tabuleiro = tabuleiro;
         this.posicao = null;
     }
     
-    /*
-    public abstract Boolean[][] movimentosPossiveis();;
+    public abstract boolean[][] movimentosPossiveis();
     
-    public Boolean movimentoPossivel(Posicao pos){
+    public boolean movimentoPossivel(Posicao pos){
         return movimentosPossiveis()[pos.getLinha()][pos.getColuna()];
     }
     
-    public Boolean existeMovimentoPossivel(){
-        for( Boolean[] arrayB : movimentosPossiveis()){
-           for( Boolean b : arrayB){
-               if( b ){
+    public boolean existeMovimentoPossivel(){
+        for( boolean[] arrayB : movimentosPossiveis()){
+            for( Boolean b : arrayB){
+                if( b ){
                    return true;
                }
            } 
         }
         return false;
     }
-    */
 
     @Override
     public String toString() {

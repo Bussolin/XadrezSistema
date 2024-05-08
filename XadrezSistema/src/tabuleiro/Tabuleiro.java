@@ -48,13 +48,11 @@ public class Tabuleiro {
     }
     
     public Boolean posicaoExiste(Posicao pos){
-        return (pos.getLinha() <= linhas || pos.getLinha() > 0)
-                && (pos.getColuna() <= colunas || pos.getColuna() > 0);
+        return posicaoExiste(pos.getLinha(), pos.getColuna() );
     }
     
-    public Boolean posicaoExiste(Integer linha, Integer coluna){
-        return (linha <= linhas || linha > 0)
-                && (coluna <= colunas || coluna > 0);
+    public Boolean posicaoExiste(int linha, int coluna){
+        return linha < linhas && linha >= 0 && coluna < colunas && coluna >= 0;
     }
     
     public Boolean existePecaNaPosicao( Posicao posicao ){

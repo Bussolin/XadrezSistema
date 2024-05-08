@@ -27,19 +27,13 @@ public class main {
                 PosicaoXadrez destino = InterfaceTabuleiro.lerPosicao(scan);
 
                 PecaXadrez pecaCaputarada = jogo.movimentaPecaXadrez( origem, destino);
-            }catch(ExcecaoTabuleiro e){
+            }catch(ExcecaoTabuleiro | InputMismatchException e){
                 System.out.println(e.getMessage());
                 System.out.println("Pressione ENTER para continuar");
                 scan.nextLine();
                 /*for(  StackTraceElement s : e.getStackTrace()){
                     System.out.println(s.toString() );
                     }*/
-                }
-            catch(InputMismatchException e){
-                System.out.println(e.getMessage());
-                System.out.println("Pressione ENTER para continuar");
-                scan.nextLine();
-                
                 }
             }while( true );
         }

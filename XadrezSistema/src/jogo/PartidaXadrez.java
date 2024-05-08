@@ -1,6 +1,7 @@
 package jogo;
 
 import jogo.excecoes.ExcecaoXadrez;
+import jogo.pecas.Rei;
 import jogo.pecas.Torre;
 import tabuleiro.Peca;
 import tabuleiro.Posicao;
@@ -18,7 +19,10 @@ public class PartidaXadrez {
     public final void organizacaoInicial(){
         colocaNovaPeca('a', 1 ,new Torre(Cor.BRANCA, tabuleiro) );
         colocaNovaPeca('h', 1 ,new Torre(Cor.BRANCA, tabuleiro) );
+        colocaNovaPeca('e', 8 ,new Rei( Cor.PRETA, tabuleiro ) );
         colocaNovaPeca('a', 8 ,new Torre(Cor.PRETA, tabuleiro) );
+        colocaNovaPeca('b', 8 ,new Torre(Cor.PRETA, tabuleiro) );
+        colocaNovaPeca('a', 7 ,new Torre(Cor.PRETA, tabuleiro) );
         colocaNovaPeca('h', 8 ,new Torre(Cor.PRETA, tabuleiro) );
     }
     
@@ -26,6 +30,7 @@ public class PartidaXadrez {
         Posicao origem = posicaoOrigem.conversaoPosicao();
         Posicao destino = posicaoDestino.conversaoPosicao();
         validaPosicaoOrigem( posicaoOrigem.conversaoPosicao() );
+        validaPosicaoDestino( posicaoOrigem.conversaoPosicao(), posicaoDestino.conversaoPosicao() );
         Peca pecaCapturada = fazMovimento( origem, destino );
         
         return (PecaXadrez) pecaCapturada;
@@ -41,6 +46,15 @@ public class PartidaXadrez {
     private void validaPosicaoOrigem( Posicao origem ){
         if( !tabuleiro.existePecaNaPosicao(origem ) ){
             throw new ExcecaoTabuleiro("Nao existe peca na posicao de origem");
+        }
+        if( !tabuleiro.pecaTabuleiro(origem).existeMovimentoPossivel()){
+            throw new ExcecaoXadrez("Nao existe movimentos possiveis para a peca");
+        }
+    }
+    
+    private void validaPosicaoDestino( Posicao origem, Posicao destino ){
+        if( !tabuleiro.pecaTabuleiro(origem).movimentoPossivel(destino)){
+            throw new ExcecaoXadrez("Nao e um momento possivel da peca");
         }
     }
     
