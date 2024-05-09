@@ -1,5 +1,7 @@
 package jogo;
 
+import java.util.ArrayList;
+import java.util.List;
 import jogo.excecoes.ExcecaoXadrez;
 import jogo.pecas.Rei;
 import jogo.pecas.Torre;
@@ -12,6 +14,8 @@ public class PartidaXadrez {
     private Tabuleiro tabuleiro;
     private int turno = 1;
     private Cor jogadorTurno;
+    private List<PecaXadrez> capturadas = new ArrayList<>();
+    private List<PecaXadrez> pecasNoTabuleiro = new ArrayList<>();
 
     public PartidaXadrez() {
         tabuleiro = new Tabuleiro(8, 8);
@@ -27,6 +31,7 @@ public class PartidaXadrez {
         colocaNovaPeca('b', 8 ,new Torre(Cor.PRETA, tabuleiro) );
         colocaNovaPeca('a', 7 ,new Torre(Cor.PRETA, tabuleiro) );
         colocaNovaPeca('h', 8 ,new Torre(Cor.PRETA, tabuleiro) );
+        
     }
     
     private void proximoTurno(){
@@ -45,14 +50,17 @@ public class PartidaXadrez {
         return tabuleiro.pecaTabuleiro(posicao).movimentosPossiveis();
     }
     
-    public PecaXadrez movimentaPecaXadrez( PosicaoXadrez posicaoOrigem, PosicaoXadrez posicaoDestino){
+    public void movimentaPecaXadrez( PosicaoXadrez posicaoOrigem, PosicaoXadrez posicaoDestino){
         Posicao origem = posicaoOrigem.conversaoPosicao();
         Posicao destino = posicaoDestino.conversaoPosicao();
         validaPosicaoOrigem( posicaoOrigem.conversaoPosicao(), getJogadorTurno() );
         validaPosicaoDestino( posicaoOrigem.conversaoPosicao(), posicaoDestino.conversaoPosicao() );
-        Peca pecaCapturada = fazMovimento( origem, destino );
+        PecaXadrez pecaCapturada = (PecaXadrez) fazMovimento( origem, destino );
+        if( pecaCapturada != null ){
+            capturadas.add( pecaCapturada );
+            pecasNoTabuleiro.remove( pecaCapturada );
+        }
         proximoTurno();
-        return (PecaXadrez) pecaCapturada;
     }
     
     private Peca fazMovimento( Posicao origem, Posicao destino){
@@ -82,6 +90,7 @@ public class PartidaXadrez {
     
     private void colocaNovaPeca( char coluna, int linha, PecaXadrez peca){
         tabuleiro.colocaPeca(peca, new PosicaoXadrez(coluna, linha).conversaoPosicao() );
+        pecasNoTabuleiro.add( peca );
     }
     
     public PecaXadrez[][] getPecas(){
@@ -94,6 +103,14 @@ public class PartidaXadrez {
        return matriz;
     }
 
+    public List<PecaXadrez> getCapturadas() {
+        return capturadas;
+    }
+
+    public List<PecaXadrez> getPecasNoTabuleiro() {
+        return pecasNoTabuleiro;
+    }
+    
     public int getTurno() {
         return turno;
     }

@@ -1,7 +1,10 @@
 package programa;
 
+import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import jogo.Cor;
 import jogo.PartidaXadrez;
 import jogo.PecaXadrez;
@@ -30,6 +33,8 @@ public class InterfaceTabuleiro {
     
     public static void imprimeJogo( PartidaXadrez jogo ){
         imprimeTabuleiro( jogo.getPecas() );
+        System.out.println();
+        imprimePecasCapturadas( jogo.getCapturadas() );
         System.out.println();
         System.out.println("Turno: " + jogo.getTurno());
         System.out.println("Esperando " + jogo.getJogadorTurno() + " jogar");
@@ -72,6 +77,29 @@ public class InterfaceTabuleiro {
             }
         }
         System.out.print(" ");
+    }
+    
+    public static void imprimePecasCapturadas(List<PecaXadrez> capturadas){
+        List<PecaXadrez> brancas = capturadas.stream().filter( x -> x.getCor() == Cor.BRANCA).collect(Collectors.toList());
+        List<PecaXadrez> pretas = capturadas.stream().filter( x -> x.getCor() == Cor.PRETA).collect(Collectors.toList());
+
+        
+        System.out.println("Pecas capturadas:");
+        
+        System.out.print("Branca: ");
+        System.out.print(ANSI_WHITE);
+        System.out.print(Arrays.toString(brancas.toArray()));
+        System.out.print(ANSI_RESET);
+        System.out.println();
+        
+        
+        System.out.print("Pretas: ");
+        System.out.print(ANSI_BLUE);
+        System.out.print(Arrays.toString(pretas.toArray()));
+        System.out.print(ANSI_RESET);
+        System.out.println();
+        
+        
     }
     
     public static PosicaoXadrez lerPosicao( Scanner scan ){

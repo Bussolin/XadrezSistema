@@ -3,7 +3,6 @@ package programa;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import jogo.PartidaXadrez;
-import jogo.PecaXadrez;
 import jogo.PosicaoXadrez;
 import tabuleiro.excecoes.ExcecaoTabuleiro;
 
@@ -11,14 +10,12 @@ public class main {
     
     public static void main(String[] args) {
         
-       
         PartidaXadrez jogo = new PartidaXadrez();
         Scanner scan = new Scanner(System.in);
         do{
             try{
                 InterfaceTabuleiro.clearScreen();
                 InterfaceTabuleiro.imprimeJogo( jogo );
-                System.out.println();
                 System.out.println("Origem: ");
                 PosicaoXadrez origem = InterfaceTabuleiro.lerPosicao(scan);
 
@@ -30,7 +27,7 @@ public class main {
                 System.out.println("Destino: ");
                 PosicaoXadrez destino = InterfaceTabuleiro.lerPosicao(scan);
 
-                PecaXadrez pecaCaputarada = jogo.movimentaPecaXadrez( origem, destino);
+                jogo.movimentaPecaXadrez( origem, destino );
             }catch(ExcecaoTabuleiro | InputMismatchException e){
                 System.out.println(e.getMessage());
                 System.out.println("Pressione ENTER para continuar");
