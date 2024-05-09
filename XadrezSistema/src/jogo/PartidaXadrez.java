@@ -10,9 +10,12 @@ import tabuleiro.excecoes.ExcecaoTabuleiro;
 
 public class PartidaXadrez {
     private Tabuleiro tabuleiro;
+    private int turno = 1;
+    private Cor jogadorTurno;
 
     public PartidaXadrez() {
         tabuleiro = new Tabuleiro(8, 8);
+        jogadorTurno = Cor.BRANCA;
         organizacaoInicial();
     }
     
@@ -26,19 +29,29 @@ public class PartidaXadrez {
         colocaNovaPeca('h', 8 ,new Torre(Cor.PRETA, tabuleiro) );
     }
     
+    private void proximoTurno(){
+        switch( this.jogadorTurno ){
+            case BRANCA -> jogadorTurno = Cor.PRETA;
+            case PRETA -> jogadorTurno = Cor.BRANCA;
+        }
+        if( jogadorTurno == Cor.BRANCA ){
+            turno++;
+        }
+    } 
+    
     public boolean[][] possiveisMovimentos( PosicaoXadrez origem ){
         Posicao posicao = origem.conversaoPosicao();
-        validaPosicaoOrigem( posicao );
+        validaPosicaoOrigem( posicao, getJogadorTurno() );
         return tabuleiro.pecaTabuleiro(posicao).movimentosPossiveis();
     }
     
     public PecaXadrez movimentaPecaXadrez( PosicaoXadrez posicaoOrigem, PosicaoXadrez posicaoDestino){
         Posicao origem = posicaoOrigem.conversaoPosicao();
         Posicao destino = posicaoDestino.conversaoPosicao();
-        validaPosicaoOrigem( posicaoOrigem.conversaoPosicao() );
+        validaPosicaoOrigem( posicaoOrigem.conversaoPosicao(), getJogadorTurno() );
         validaPosicaoDestino( posicaoOrigem.conversaoPosicao(), posicaoDestino.conversaoPosicao() );
         Peca pecaCapturada = fazMovimento( origem, destino );
-        
+        proximoTurno();
         return (PecaXadrez) pecaCapturada;
     }
     
@@ -49,9 +62,12 @@ public class PartidaXadrez {
         return capturada;
     }
     
-    private void validaPosicaoOrigem( Posicao origem ){
+    private void validaPosicaoOrigem( Posicao origem, Cor jogadorAtual ){
         if( !tabuleiro.existePecaNaPosicao(origem ) ){
             throw new ExcecaoTabuleiro("Nao existe peca na posicao de origem");
+        }
+        if( getJogadorTurno() != ((PecaXadrez) tabuleiro.pecaTabuleiro(origem)).getCor()){
+            throw new ExcecaoXadrez("Peca nao pertence ao jogador");
         }
         if( !tabuleiro.pecaTabuleiro(origem).existeMovimentoPossivel()){
             throw new ExcecaoXadrez("Nao existe movimentos possiveis para a peca");
@@ -77,5 +93,14 @@ public class PartidaXadrez {
        }
        return matriz;
     }
+
+    public int getTurno() {
+        return turno;
+    }
+
+    public Cor getJogadorTurno() {
+        return jogadorTurno;
+    }
+    
     
 }

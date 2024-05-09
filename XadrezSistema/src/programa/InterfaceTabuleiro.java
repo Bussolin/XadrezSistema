@@ -3,6 +3,7 @@ package programa;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import jogo.Cor;
+import jogo.PartidaXadrez;
 import jogo.PecaXadrez;
 import jogo.PosicaoXadrez;
 
@@ -26,6 +27,13 @@ public class InterfaceTabuleiro {
     public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
     public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
     public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
+    
+    public static void imprimeJogo( PartidaXadrez jogo ){
+        imprimeTabuleiro( jogo.getPecas() );
+        System.out.println();
+        System.out.println("Turno: " + jogo.getTurno());
+        System.out.println("Esperando " + jogo.getJogadorTurno() + " jogar");
+    }
     
     public static void imprimeTabuleiro( PecaXadrez[][] px ){
         for( int i = 0; i < px.length; i++ ){
@@ -77,7 +85,7 @@ public class InterfaceTabuleiro {
         }
     }
     
-        // https://stackoverflow.com/questions/2979383/java-clear-the-console
+    // https://stackoverflow.com/questions/2979383/java-clear-the-console
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();

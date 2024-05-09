@@ -17,7 +17,7 @@ public class main {
         do{
             try{
                 InterfaceTabuleiro.clearScreen();
-                InterfaceTabuleiro.imprimeTabuleiro( jogo.getPecas() );
+                InterfaceTabuleiro.imprimeJogo( jogo );
                 System.out.println();
                 System.out.println("Origem: ");
                 PosicaoXadrez origem = InterfaceTabuleiro.lerPosicao(scan);
