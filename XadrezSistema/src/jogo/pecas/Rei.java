@@ -2,6 +2,7 @@ package jogo.pecas;
 
 import jogo.Cor;
 import jogo.PecaXadrez;
+import tabuleiro.Posicao;
 import tabuleiro.Tabuleiro;
 
 public class Rei extends PecaXadrez{
@@ -25,7 +26,7 @@ public class Rei extends PecaXadrez{
                 for( Integer j = 0; j < 8; j++){
                         matriz[i][j] = ( (j.equals(this.posicao.getColuna() + 1)) || (j.equals(this.posicao.getColuna() - 1)) || 
                                          (j.equals(this.posicao.getColuna()) && !i.equals(this.posicao.getLinha()) ))
-                                       && tabuleiro.posicaoExiste( i, j ); 
+                                       && tabuleiro.posicaoExiste( i, j ) && !pecaAliadaNaPosicao( new Posicao(i, j)); 
                 }
             }
         }

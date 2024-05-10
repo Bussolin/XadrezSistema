@@ -17,7 +17,7 @@ public class main {
                 InterfaceTabuleiro.clearScreen();
                 InterfaceTabuleiro.imprimeJogo( jogo );
                 System.out.println("Origem: ");
-                PosicaoXadrez origem = InterfaceTabuleiro.lerPosicao(scan);
+                PosicaoXadrez origem = InterfaceTabuleiro.lerPosicao(scan );
 
                 boolean[][] possiveisMovimentos = jogo.possiveisMovimentos(origem);
                 InterfaceTabuleiro.clearScreen();
@@ -28,7 +28,7 @@ public class main {
                 PosicaoXadrez destino = InterfaceTabuleiro.lerPosicao(scan);
 
                 jogo.movimentaPecaXadrez( origem, destino );
-            }catch(ExcecaoTabuleiro | InputMismatchException e){
+            }catch( ExcecaoTabuleiro | InputMismatchException e ){
                 System.out.println(e.getMessage());
                 System.out.println("Pressione ENTER para continuar");
                 scan.nextLine();
