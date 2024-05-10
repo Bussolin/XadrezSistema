@@ -36,6 +36,8 @@ public class main {
                     System.out.println(s.toString() );
                     }*/
                 }
-            }while( true );
+            }while( !jogo.isCheckmate() );
+        InterfaceTabuleiro.clearScreen();
+        InterfaceTabuleiro.imprimeJogo( jogo );
         }
 }

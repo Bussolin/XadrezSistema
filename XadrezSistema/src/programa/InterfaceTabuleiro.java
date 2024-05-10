@@ -37,10 +37,16 @@ public class InterfaceTabuleiro {
         imprimePecasCapturadas( jogo.getCapturadas() );
         System.out.println();
         System.out.println("Turno: " + jogo.getTurno());
-        System.out.println("Esperando " + jogo.getJogadorTurno() + " jogar");
-        if(jogo.isCheck()){
-            System.out.println("CHECK!");
+        if( !jogo.isCheckmate()){
+            System.out.println("Esperando " + jogo.getJogadorTurno() + " jogar");
+            if(jogo.isCheck()){
+                System.out.println("CHECK!");
+            }
+        }else{
+            System.out.println("CHECKMATE!");
+            System.out.println("Vencedor: " + jogo.getJogadorTurno());
         }
+        
     }
     
     public static void imprimeTabuleiro( PecaXadrez[][] px ){

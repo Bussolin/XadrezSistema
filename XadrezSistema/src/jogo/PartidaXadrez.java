@@ -16,6 +16,7 @@ public class PartidaXadrez {
     private int turno = 1;
     private Cor jogadorTurno;
     private boolean check;
+    private boolean checkmate;
     
     private List<PecaXadrez> capturadas = new ArrayList<>();
     private List<PecaXadrez> pecasNoTabuleiro = new ArrayList<>();
@@ -27,14 +28,11 @@ public class PartidaXadrez {
     }
     
     public final void organizacaoInicial(){
-        colocaNovaPeca('a', 1 ,new Torre(Cor.BRANCA, tabuleiro) );
-        colocaNovaPeca('h', 1 ,new Torre(Cor.BRANCA, tabuleiro) );
+        colocaNovaPeca('h', 7 ,new Torre(Cor.BRANCA, tabuleiro) );
+        colocaNovaPeca('b', 1 ,new Torre(Cor.BRANCA, tabuleiro) );
         colocaNovaPeca('f', 1 ,new Rei( Cor.BRANCA, tabuleiro ) );
-        colocaNovaPeca('e', 8 ,new Rei( Cor.PRETA, tabuleiro ) );
-        colocaNovaPeca('a', 8 ,new Torre(Cor.PRETA, tabuleiro) );
+        colocaNovaPeca('a', 8 ,new Rei( Cor.PRETA, tabuleiro ) );
         colocaNovaPeca('b', 8 ,new Torre(Cor.PRETA, tabuleiro) );
-        colocaNovaPeca('a', 7 ,new Torre(Cor.PRETA, tabuleiro) );
-        colocaNovaPeca('h', 8 ,new Torre(Cor.PRETA, tabuleiro) );
         
     }
     
@@ -52,7 +50,7 @@ public class PartidaXadrez {
         return (cor == Cor.BRANCA) ? Cor.PRETA : Cor.BRANCA;
     }
     
-    public boolean verificaCheck(Cor cor){
+    private boolean verificaCheck(Cor cor){
         List<PecaXadrez> pecasOponentes = pecasNoTabuleiro.stream().filter( x -> x.getCor() == corOponente( cor )).collect(Collectors.toList());
         Posicao posicaoRei = rei( cor ).getPosicaoXadrez().conversaoPosicao();
         for( PecaXadrez p : pecasOponentes ){
@@ -63,9 +61,36 @@ public class PartidaXadrez {
         return false;
     }
     
+    private boolean verificaCheckMate( Cor cor ){
+        check = verificaCheck(corOponente(jogadorTurno));
+        if(!check){
+            return false;
+        }
+        
+        List<PecaXadrez> pecas = pecasNoTabuleiro.stream().filter( x-> x.getCor() == cor ).collect(Collectors.toList());
+        for( PecaXadrez p : pecas){
+            boolean[][] possiveis = p.movimentosPossiveis();
+            for (int i = 0; i<possiveis.length;i++) {
+                for (int j = 0; j<possiveis.length;j++) {
+                    if(possiveis[i][j]){
+                        Posicao origem = p.getPosicaoXadrez().conversaoPosicao();
+                        Posicao destino = new Posicao( i,j );
+                        Peca capturada = fazMovimento(origem, destino);
+                        boolean isCheck = verificaCheck(cor);
+                        desfazMovimento(origem, destino, (PecaXadrez) capturada);
+                        if(!isCheck){
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+    
     private PecaXadrez rei( Cor cor ){
-        List<PecaXadrez> rei = pecasNoTabuleiro.stream().filter( x-> x.getCor() == cor ).collect(Collectors.toList());
-        for( PecaXadrez p : rei){
+        List<PecaXadrez> pecas = pecasNoTabuleiro.stream().filter( x-> x.getCor() == cor ).collect(Collectors.toList());
+        for( PecaXadrez p : pecas){
             if( p instanceof Rei){
                 return p;
             }
@@ -95,20 +120,24 @@ public class PartidaXadrez {
             desfazMovimento(origem, destino, pecaCapturada);
             throw new ExcecaoXadrez("Jogada invalida: o rei esta em check");
         }
-        check = verificaCheck(corOponente(jogadorTurno));
-        
-        proximoTurno();
+        if(verificaCheckMate( corOponente(jogadorTurno)) ){
+            checkmate = true;
+        }else{
+            proximoTurno();
+        }
     }
     
     private Peca fazMovimento( Posicao origem, Posicao destino){
-        Peca p = tabuleiro.removePeca(origem);
+        PecaXadrez p = (PecaXadrez) tabuleiro.removePeca(origem);
+        p.aumentaContagem();
         Peca capturada = tabuleiro.removePeca(destino);
         tabuleiro.colocaPeca(p, destino);
         return capturada;
     }
     
     private void desfazMovimento( Posicao origem, Posicao destino, PecaXadrez capturada){
-        Peca p = tabuleiro.removePeca(destino);
+        PecaXadrez p = (PecaXadrez) tabuleiro.removePeca(destino);
+        p.diminuiContagem();
         tabuleiro.colocaPeca( p, origem );
         
         if( capturada != null ){
@@ -159,6 +188,10 @@ public class PartidaXadrez {
         return jogadorTurno;
     }
 
+    public boolean isCheckmate() {
+        return checkmate;
+    }
+    
     public boolean isCheck() {
         return check;
     }

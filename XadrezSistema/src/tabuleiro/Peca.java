@@ -26,11 +26,6 @@ public abstract class Peca {
         return false;
     }
 
-    @Override
-    public String toString() {
-        return "Peca{" + "posicao=" + posicao + ", tabuleiro=" + tabuleiro + '}';
-    }
-
     protected Tabuleiro getTabuleiro() {
         return tabuleiro;
     }
