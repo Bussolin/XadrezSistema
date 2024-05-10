@@ -16,7 +16,7 @@ public class main {
             try{
                 InterfaceTabuleiro.clearScreen();
                 InterfaceTabuleiro.imprimeJogo( jogo );
-                System.out.println("Origem: ");
+                System.out.print("Origem: ");
                 PosicaoXadrez origem = InterfaceTabuleiro.lerPosicao(scan );
 
                 boolean[][] possiveisMovimentos = jogo.possiveisMovimentos(origem);
@@ -24,7 +24,7 @@ public class main {
                 InterfaceTabuleiro.imprimeTabuleiro(jogo.getPecas(), possiveisMovimentos);
                 
                 System.out.println();
-                System.out.println("Destino: ");
+                System.out.print("Destino: ");
                 PosicaoXadrez destino = InterfaceTabuleiro.lerPosicao(scan);
 
                 jogo.movimentaPecaXadrez( origem, destino );

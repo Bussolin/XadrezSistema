@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import jogo.excecoes.ExcecaoXadrez;
+import jogo.pecas.Peao;
 import jogo.pecas.Rei;
 import jogo.pecas.Torre;
 import tabuleiro.Peca;
@@ -31,6 +32,7 @@ public class PartidaXadrez {
         colocaNovaPeca('h', 7 ,new Torre(Cor.BRANCA, tabuleiro) );
         colocaNovaPeca('b', 1 ,new Torre(Cor.BRANCA, tabuleiro) );
         colocaNovaPeca('f', 1 ,new Rei( Cor.BRANCA, tabuleiro ) );
+        colocaNovaPeca('f', 2 ,new Peao( Cor.BRANCA, tabuleiro ) );
         colocaNovaPeca('a', 8 ,new Rei( Cor.PRETA, tabuleiro ) );
         colocaNovaPeca('b', 8 ,new Torre(Cor.PRETA, tabuleiro) );
         
