@@ -28,37 +28,26 @@ public class Peao extends PecaXadrez{
         int coluna = this.posicao.getColuna();
         
         Posicao p = new Posicao( linha, coluna );
-        if( !getTabuleiro().existePecaNaPosicao( p ) ){
+        if( tabuleiro.posicaoExiste( p ) && !getTabuleiro().existePecaNaPosicao( p ) ){
             matriz[ p.getLinha() ][ p.getColuna() ] = true;
         }
         Posicao p2 = new Posicao( posicao.getLinha() + incrementoDecremento + incrementoDecremento, posicao.getColuna() );
-        if( getContagemMovimento() == 0 && !getTabuleiro().existePecaNaPosicao( p ) && !getTabuleiro().existePecaNaPosicao( p2 ) ){
+        if( tabuleiro.posicaoExiste( p ) && getContagemMovimento() == 0 && !getTabuleiro().existePecaNaPosicao( p ) && !getTabuleiro().existePecaNaPosicao( p2 ) ){
             matriz[ p2.getLinha() ][ p2.getColuna() ] = true;
         }
         p.setColuna( coluna + 1);
-        if( pecaAdversariaNaPosicao( p ) ){
+        if( tabuleiro.posicaoExiste( p ) && pecaAdversariaNaPosicao( p ) ){
             matriz[ p.getLinha() ][ p.getColuna() ] = true;
         }
         p.setColuna( coluna - 1 );
-        if( pecaAdversariaNaPosicao( p ) ){
+        if( tabuleiro.posicaoExiste( p ) && pecaAdversariaNaPosicao( p ) ){
             matriz[ p.getLinha() ][ p.getColuna() ] = true;
         }
         
         
         return matriz;
     }
-    
-    private int posicaoInicial( Cor cor ){
-        int posicaoInicial = 0;
-        
-        switch(cor){
-            case BRANCA -> posicaoInicial = 6;
-            case PRETA -> posicaoInicial = 1;
-            default -> throw new ExcecaoXadrez("Cor da peca invalida verificar");
-        }
-        
-        return posicaoInicial;
-    }
+
     private int incrementoDecremento( Cor cor ){
         int incrementoDecremento = 0;
         
@@ -67,7 +56,6 @@ public class Peao extends PecaXadrez{
             case PRETA -> incrementoDecremento = 1;
             default -> throw new ExcecaoXadrez("Cor da peca invalida verificar");
         }
-        
         return incrementoDecremento;
     }
 }
