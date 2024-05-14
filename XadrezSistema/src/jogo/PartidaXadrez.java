@@ -33,6 +33,7 @@ public class PartidaXadrez {
         colocaNovaPeca('b', 1 ,new Torre(Cor.BRANCA, tabuleiro) );
         colocaNovaPeca('f', 1 ,new Rei( Cor.BRANCA, tabuleiro ) );
         colocaNovaPeca('f', 2 ,new Peao( Cor.BRANCA, tabuleiro ) );
+        colocaNovaPeca('f', 7 ,new Peao( Cor.PRETA, tabuleiro ) );
         colocaNovaPeca('a', 8 ,new Rei( Cor.PRETA, tabuleiro ) );
         colocaNovaPeca('b', 8 ,new Torre(Cor.PRETA, tabuleiro) );
         

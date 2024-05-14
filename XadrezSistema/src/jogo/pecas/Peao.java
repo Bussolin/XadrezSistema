@@ -23,52 +23,51 @@ public class Peao extends PecaXadrez{
     public boolean[][] movimentosPossiveis() {
         Tabuleiro tabuleiro = getTabuleiro();
         boolean[][] matriz = new boolean[tabuleiro.getColunas()][tabuleiro.getLinhas()];
-        
-        for( Integer i = Inicializao( getCor() ); condicao( getCor(), i, tabuleiro ); iterador( i, getCor() )){
-            System.out.println(i);
-            for( Integer j = 0; j<tabuleiro.getColunas(); j++){
-                System.out.println(j);
-                if( i == this.posicao.getLinha()){
-                    if( j == this.posicao.getColuna() && !pecaAdversariaNaPosicao(new Posicao(i, j)) ){
-                        matriz[i][j] = true;
-                    }else if( (j == this.posicao.getColuna() + 1 || j == this.posicao.getColuna() - 1) 
-                            && pecaAdversariaNaPosicao(new Posicao(i, j)) ){
-                        matriz[i][j] = true;
-                    }
-                }
+        Integer incrementoDecremento = incrementoDecremento( getCor() );
                 
+        if( this.getContagemMovimento() == 0 ){
+            Integer posicaoInicial = posicaoInicial( getCor() );
+            matriz[ posicaoInicial + incrementoDecremento ][ this.posicao.getColuna()] = true;
+            matriz[ posicaoInicial + incrementoDecremento + incrementoDecremento ][ this.posicao.getColuna() ] = true;
+        }else{
+            int linha = this.posicao.getLinha();
+            int coluna = this.posicao.getColuna();
+            if( pecaAdversariaNaPosicao( new Posicao(linha + incrementoDecremento , coluna + 1) ) ){
+                matriz[ linha + incrementoDecremento ][ coluna + 1 ] = true;
             }
+            if( pecaAdversariaNaPosicao( new Posicao(linha + incrementoDecremento , coluna - 1) )){
+                matriz[ linha + incrementoDecremento ][ coluna - 1 ] = true;
+            }
+            if( !pecaNaPosicao( new Posicao(this.posicao.getLinha() + incrementoDecremento , this.posicao.getColuna()) ) ){
+                matriz[ this.posicao.getLinha() + incrementoDecremento( getCor() ) ][ this.posicao.getColuna()] = true;
+            }
+            
         }
+        
         
         return matriz;
     }
     
-    private int Inicializao( Cor cor ){
-        int j = 0;
-        switch( cor ){
-            case BRANCA -> j = 7;
-            case PRETA -> j = 0;
-            default -> throw new ExcecaoXadrez("Peca com nenhuma cor. Verificar");
-        }
-        return j;
-    }
-    
-    private boolean condicao( Cor cor, Integer coluna, Tabuleiro tabuleiro){
-        boolean condicao;
-        switch( cor ){
-            case BRANCA -> condicao = coluna>= 0;
-            case PRETA -> condicao = coluna<tabuleiro.getLinhas();
-            default -> throw new ExcecaoXadrez("Peca com nenhuma cor. Verificar");
-        }
-        return condicao;
-    }
+    private int posicaoInicial( Cor cor ){
+        int posicaoInicial = 0;
         
-    private int iterador( Integer linha, Cor cor ){
         switch(cor){
-            case BRANCA -> linha--;
-            case PRETA -> linha++;
-            default -> throw new ExcecaoXadrez("Peca com nenhuma cor. Verificar");
+            case BRANCA -> posicaoInicial = 6;
+            case PRETA -> posicaoInicial = 1;
+            default -> throw new ExcecaoXadrez("Cor da peca invalida verificar");
         }
-        return linha;
-    }       
+        
+        return posicaoInicial;
+    }
+    private int incrementoDecremento( Cor cor ){
+        int incrementoDecremento = 0;
+        
+        switch(cor){
+            case BRANCA -> incrementoDecremento = -1;
+            case PRETA -> incrementoDecremento = 1;
+            default -> throw new ExcecaoXadrez("Cor da peca invalida verificar");
+        }
+        
+        return incrementoDecremento;
+    }
 }
