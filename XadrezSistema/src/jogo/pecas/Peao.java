@@ -24,24 +24,24 @@ public class Peao extends PecaXadrez{
         Tabuleiro tabuleiro = getTabuleiro();
         boolean[][] matriz = new boolean[tabuleiro.getColunas()][tabuleiro.getLinhas()];
         Integer incrementoDecremento = incrementoDecremento( getCor() );
-                
-        if( this.getContagemMovimento() == 0 ){
-            Integer posicaoInicial = posicaoInicial( getCor() );
-            matriz[ posicaoInicial + incrementoDecremento ][ this.posicao.getColuna()] = true;
-            matriz[ posicaoInicial + incrementoDecremento + incrementoDecremento ][ this.posicao.getColuna() ] = true;
-        }else{
-            int linha = this.posicao.getLinha();
-            int coluna = this.posicao.getColuna();
-            if( pecaAdversariaNaPosicao( new Posicao(linha + incrementoDecremento , coluna + 1) ) ){
-                matriz[ linha + incrementoDecremento ][ coluna + 1 ] = true;
-            }
-            if( pecaAdversariaNaPosicao( new Posicao(linha + incrementoDecremento , coluna - 1) )){
-                matriz[ linha + incrementoDecremento ][ coluna - 1 ] = true;
-            }
-            if( !pecaNaPosicao( new Posicao(this.posicao.getLinha() + incrementoDecremento , this.posicao.getColuna()) ) ){
-                matriz[ this.posicao.getLinha() + incrementoDecremento( getCor() ) ][ this.posicao.getColuna()] = true;
-            }
-            
+        int linha = this.posicao.getLinha() + incrementoDecremento;
+        int coluna = this.posicao.getColuna();
+        
+        Posicao p = new Posicao( linha, coluna );
+        if( !getTabuleiro().existePecaNaPosicao( p ) ){
+            matriz[ p.getLinha() ][ p.getColuna() ] = true;
+        }
+        Posicao p2 = new Posicao( posicao.getLinha() + incrementoDecremento + incrementoDecremento, posicao.getColuna() );
+        if( getContagemMovimento() == 0 && !getTabuleiro().existePecaNaPosicao( p ) && !getTabuleiro().existePecaNaPosicao( p2 ) ){
+            matriz[ p2.getLinha() ][ p2.getColuna() ] = true;
+        }
+        p.setColuna( coluna + 1);
+        if( pecaAdversariaNaPosicao( p ) ){
+            matriz[ p.getLinha() ][ p.getColuna() ] = true;
+        }
+        p.setColuna( coluna - 1 );
+        if( pecaAdversariaNaPosicao( p ) ){
+            matriz[ p.getLinha() ][ p.getColuna() ] = true;
         }
         
         
