@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import jogo.excecoes.ExcecaoXadrez;
+import jogo.pecas.Bispo;
 import jogo.pecas.Peao;
 import jogo.pecas.Rei;
 import jogo.pecas.Torre;
@@ -29,10 +30,20 @@ public class PartidaXadrez {
     }
     
     public final void organizacaoInicial(){
-        colocaNovaPeca('h', 7 ,new Torre(Cor.BRANCA, tabuleiro) );
-        colocaNovaPeca('b', 1 ,new Torre(Cor.BRANCA, tabuleiro) );
-        colocaNovaPeca('f', 1 ,new Rei( Cor.BRANCA, tabuleiro ) );
+        colocaNovaPeca('a', 1 ,new Torre(Cor.BRANCA, tabuleiro) );
+        colocaNovaPeca('h', 1 ,new Torre(Cor.BRANCA, tabuleiro) );
+        colocaNovaPeca('e', 1 ,new Rei( Cor.BRANCA, tabuleiro ) );
+        colocaNovaPeca('c', 1 ,new Bispo( Cor.BRANCA, tabuleiro ) );
+        colocaNovaPeca('f', 1 ,new Bispo( Cor.BRANCA, tabuleiro ) );
+        colocaNovaPeca('a', 2 ,new Peao( Cor.BRANCA, tabuleiro ) );
+        colocaNovaPeca('b', 2 ,new Peao( Cor.BRANCA, tabuleiro ) );
+        colocaNovaPeca('c', 2 ,new Peao( Cor.BRANCA, tabuleiro ) );
+        colocaNovaPeca('d', 2 ,new Peao( Cor.BRANCA, tabuleiro ) );
+        colocaNovaPeca('e', 2 ,new Peao( Cor.BRANCA, tabuleiro ) );
         colocaNovaPeca('f', 2 ,new Peao( Cor.BRANCA, tabuleiro ) );
+        colocaNovaPeca('g', 2 ,new Peao( Cor.BRANCA, tabuleiro ) );
+        colocaNovaPeca('h', 2 ,new Peao( Cor.BRANCA, tabuleiro ) );
+        
         colocaNovaPeca('f', 7 ,new Peao( Cor.PRETA, tabuleiro ) );
         colocaNovaPeca('a', 8 ,new Rei( Cor.PRETA, tabuleiro ) );
         colocaNovaPeca('b', 8 ,new Torre(Cor.PRETA, tabuleiro) );
