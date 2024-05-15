@@ -3,15 +3,20 @@ package jogo.pecas;
 import jogo.Cor;
 import static jogo.Cor.BRANCA;
 import static jogo.Cor.PRETA;
+import jogo.PartidaXadrez;
 import jogo.PecaXadrez;
 import jogo.excecoes.ExcecaoXadrez;
+import tabuleiro.Peca;
 import tabuleiro.Posicao;
 import tabuleiro.Tabuleiro;
 
 public class Peao extends PecaXadrez{
-
-    public Peao(Cor cor, Tabuleiro tabuleiro) {
+    
+    private PartidaXadrez jogo;
+    
+    public Peao(Cor cor, Tabuleiro tabuleiro, PartidaXadrez jogo) {
         super(cor, tabuleiro);
+        this.jogo = jogo;
     }
 
     @Override
@@ -30,11 +35,12 @@ public class Peao extends PecaXadrez{
         Posicao p = new Posicao( linha, coluna );
         if( tabuleiro.posicaoExiste( p ) && !getTabuleiro().existePecaNaPosicao( p ) ){
             matriz[ p.getLinha() ][ p.getColuna() ] = true;
+            Posicao p2 = new Posicao( linha + incrementoDecremento, coluna );
+            if( getContagemMovimento() == 0 && !getTabuleiro().existePecaNaPosicao( p2 ) ){
+                matriz[ p2.getLinha() ][ p2.getColuna() ] = true;
+            }
         }
-        Posicao p2 = new Posicao( posicao.getLinha() + incrementoDecremento + incrementoDecremento, posicao.getColuna() );
-        if( tabuleiro.posicaoExiste( p ) && getContagemMovimento() == 0 && !getTabuleiro().existePecaNaPosicao( p ) && !getTabuleiro().existePecaNaPosicao( p2 ) ){
-            matriz[ p2.getLinha() ][ p2.getColuna() ] = true;
-        }
+        
         p.setColuna( coluna + 1);
         if( tabuleiro.posicaoExiste( p ) && pecaAdversariaNaPosicao( p ) ){
             matriz[ p.getLinha() ][ p.getColuna() ] = true;
@@ -44,6 +50,16 @@ public class Peao extends PecaXadrez{
             matriz[ p.getLinha() ][ p.getColuna() ] = true;
         }
         
+        //enPeassant
+        p.setValores( linha - incrementoDecremento, coluna + 1);
+        if( tabuleiro.posicaoExiste( p ) && tabuleiro.pecaTabuleiro( p ) != null && tabuleiro.pecaTabuleiro( p ) == jogo.getEnPasseantVulneravel() ){
+            matriz[ p.getLinha() + incrementoDecremento ][ p.getColuna() ] = true;
+        }
+        
+        p.setValores( linha - incrementoDecremento, coluna - 1);
+        if( tabuleiro.posicaoExiste( p ) && pecaAdversariaNaPosicao( p ) && tabuleiro.pecaTabuleiro( p ) == jogo.getEnPasseantVulneravel() ){
+            matriz[ p.getLinha() + incrementoDecremento ][ p.getColuna() ] = true;
+        }
         
         return matriz;
     }
@@ -58,4 +74,5 @@ public class Peao extends PecaXadrez{
         }
         return incrementoDecremento;
     }
+    
 }
