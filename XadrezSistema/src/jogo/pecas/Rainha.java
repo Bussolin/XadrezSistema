@@ -5,9 +5,9 @@ import jogo.PecaXadrez;
 import tabuleiro.Posicao;
 import tabuleiro.Tabuleiro;
 
-public class Bispo extends PecaXadrez {
+public class Rainha extends PecaXadrez{
 
-    public Bispo(Cor cor, Tabuleiro tabuleiro) {
+    public Rainha(Cor cor, Tabuleiro tabuleiro) {
         super(cor, tabuleiro);
     }
     
@@ -18,6 +18,47 @@ public class Bispo extends PecaXadrez {
         Posicao p = new Posicao( 0,0);
         int linha = posicao.getLinha();
         int coluna = posicao.getColuna();
+        
+       
+        //acima
+        p.setValores( linha - 1, coluna );
+        while( tabuleiro.posicaoExiste( p ) && !tabuleiro.existePecaNaPosicao( p )){
+            matriz[p.getLinha()][p.getColuna()] = true;
+            p.setLinha( p.getLinha() - 1 );
+        }
+        if( tabuleiro.posicaoExiste( p ) && pecaAdversariaNaPosicao( p ) ){
+            matriz[p.getLinha()][p.getColuna()] = true;
+        }
+        
+        //abaixo
+        p.setValores( linha + 1, coluna );
+        while( tabuleiro.posicaoExiste( p ) && !tabuleiro.existePecaNaPosicao( p )){
+            matriz[p.getLinha()][p.getColuna()] = true;
+            p.setLinha( p.getLinha() + 1 );
+        }
+        if( tabuleiro.posicaoExiste( p ) && pecaAdversariaNaPosicao( p ) ){
+            matriz[p.getLinha()][p.getColuna()] = true;
+        }
+        
+        //direita
+        p.setValores( linha, coluna + 1);
+        while( tabuleiro.posicaoExiste( p ) && !tabuleiro.existePecaNaPosicao( p )){
+            matriz[p.getLinha()][p.getColuna()] = true;
+            p.setColuna( p.getColuna() + 1 );
+        }
+        if( tabuleiro.posicaoExiste( p ) && pecaAdversariaNaPosicao( p ) ){
+            matriz[p.getLinha()][p.getColuna()] = true;
+        }
+        
+        //esquerda
+        p.setValores( linha, coluna - 1 );
+        while( tabuleiro.posicaoExiste( p ) && !tabuleiro.existePecaNaPosicao( p )){
+            matriz[p.getLinha()][p.getColuna()] = true;
+            p.setColuna( p.getColuna() - 1 );
+        }
+        if( tabuleiro.posicaoExiste( p ) && pecaAdversariaNaPosicao( p ) ){
+            matriz[p.getLinha()][p.getColuna()] = true;
+        }
         
         //diagonalEsquerdaAcima
         p.setValores( linha - 1, coluna - 1 );
@@ -38,7 +79,6 @@ public class Bispo extends PecaXadrez {
         if( tabuleiro.posicaoExiste( p ) && pecaAdversariaNaPosicao( p ) ){
             matriz[p.getLinha()][p.getColuna()] = true;
         }
-        
         //diagonalDireitaAcima
         p.setValores( linha - 1, coluna + 1 );
         while( tabuleiro.posicaoExiste( p ) && !tabuleiro.existePecaNaPosicao( p )){
@@ -48,7 +88,6 @@ public class Bispo extends PecaXadrez {
         if( tabuleiro.posicaoExiste( p ) && pecaAdversariaNaPosicao( p ) ){
             matriz[p.getLinha()][p.getColuna()] = true;
         }
-        
         //diagonalDireitaAbaixo
         p.setValores( linha + 1, coluna + 1 );
         while( tabuleiro.posicaoExiste( p ) && !tabuleiro.existePecaNaPosicao( p )){
@@ -58,14 +97,12 @@ public class Bispo extends PecaXadrez {
         if( tabuleiro.posicaoExiste( p ) && pecaAdversariaNaPosicao( p ) ){
             matriz[p.getLinha()][p.getColuna()] = true;
         }
+        
         return matriz;
     }
 
     @Override
     public String toString() {
-        return "B";
+        return "Q";
     }
-    
-    
-    
 }

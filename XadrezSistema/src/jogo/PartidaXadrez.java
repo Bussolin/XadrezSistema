@@ -7,6 +7,7 @@ import jogo.excecoes.ExcecaoXadrez;
 import jogo.pecas.Bispo;
 import jogo.pecas.Cavalo;
 import jogo.pecas.Peao;
+import jogo.pecas.Rainha;
 import jogo.pecas.Rei;
 import jogo.pecas.Torre;
 import tabuleiro.Peca;
@@ -34,10 +35,11 @@ public class PartidaXadrez {
         colocaNovaPeca('a', 1 ,new Torre(Cor.BRANCA, tabuleiro) );
         colocaNovaPeca('h', 1 ,new Torre(Cor.BRANCA, tabuleiro) );
         colocaNovaPeca('e', 1 ,new Rei( Cor.BRANCA, tabuleiro ) );
-        colocaNovaPeca('c', 1 ,new Bispo( Cor.BRANCA, tabuleiro ) );
+        colocaNovaPeca('c', 4 ,new Bispo( Cor.BRANCA, tabuleiro ) );
         colocaNovaPeca('f', 1 ,new Bispo( Cor.BRANCA, tabuleiro ) );
         colocaNovaPeca('b', 1 ,new Cavalo( Cor.BRANCA, tabuleiro ) );
         colocaNovaPeca('g', 1 ,new Cavalo( Cor.BRANCA, tabuleiro ) );
+        colocaNovaPeca('f', 3 ,new Rainha( Cor.BRANCA, tabuleiro ) );
         colocaNovaPeca('a', 2 ,new Peao( Cor.BRANCA, tabuleiro ) );
         colocaNovaPeca('b', 2 ,new Peao( Cor.BRANCA, tabuleiro ) );
         colocaNovaPeca('c', 2 ,new Peao( Cor.BRANCA, tabuleiro ) );
@@ -54,6 +56,7 @@ public class PartidaXadrez {
         colocaNovaPeca('f', 8 ,new Bispo( Cor.PRETA, tabuleiro ) );
         colocaNovaPeca('b', 8 ,new Cavalo( Cor.PRETA, tabuleiro ) );
         colocaNovaPeca('g', 8 ,new Cavalo( Cor.PRETA, tabuleiro ) );
+        colocaNovaPeca('d', 8 ,new Rainha( Cor.PRETA, tabuleiro ) );
         colocaNovaPeca('a', 7 ,new Peao( Cor.PRETA, tabuleiro ) );
         colocaNovaPeca('b', 7 ,new Peao( Cor.PRETA, tabuleiro ) );
         colocaNovaPeca('c', 7 ,new Peao( Cor.PRETA, tabuleiro ) );
@@ -85,6 +88,9 @@ public class PartidaXadrez {
         List<PecaXadrez> pecasOponentes = pecasNoTabuleiro.stream().filter( x -> x.getCor() == corOponente( cor )).collect(Collectors.toList());
         Posicao posicaoRei = rei( cor ).getPosicaoXadrez().conversaoPosicao();
         for( PecaXadrez p : pecasOponentes ){
+            if( p.getPosicaoXadrez() == null ){
+                continue;
+            }
             if( p.movimentoPossivel( posicaoRei ) ){
                 return true;
             }
@@ -101,6 +107,7 @@ public class PartidaXadrez {
         List<PecaXadrez> pecas = pecasNoTabuleiro.stream().filter( x-> x.getCor() == cor ).collect(Collectors.toList());
         for( PecaXadrez p : pecas){
             boolean[][] possiveis = p.movimentosPossiveis();
+            
             for (int i = 0; i<possiveis.length;i++) {
                 for (int j = 0; j<possiveis.length;j++) {
                     if(possiveis[i][j]){
@@ -108,6 +115,7 @@ public class PartidaXadrez {
                         Posicao destino = new Posicao( i,j );
                         Peca capturada = fazMovimento(origem, destino);
                         boolean isCheck = verificaCheck(cor);
+                        
                         desfazMovimento(origem, destino, (PecaXadrez) capturada);
                         if(!isCheck){
                             return false;
@@ -136,10 +144,11 @@ public class PartidaXadrez {
     }
     
     public void movimentaPecaXadrez( PosicaoXadrez posicaoOrigem, PosicaoXadrez posicaoDestino){
+
         Posicao origem = posicaoOrigem.conversaoPosicao();
         Posicao destino = posicaoDestino.conversaoPosicao();
-        validaPosicaoOrigem( posicaoOrigem.conversaoPosicao(), getJogadorTurno() );
-        validaPosicaoDestino( posicaoOrigem.conversaoPosicao(), posicaoDestino.conversaoPosicao() );
+        validaPosicaoOrigem( origem, getJogadorTurno() );
+        validaPosicaoDestino( origem, destino );
         PecaXadrez pecaCapturada = (PecaXadrez) fazMovimento( origem, destino );
         
         if( pecaCapturada != null ){
@@ -170,7 +179,6 @@ public class PartidaXadrez {
         PecaXadrez p = (PecaXadrez) tabuleiro.removePeca(destino);
         p.diminuiContagem();
         tabuleiro.colocaPeca( p, origem );
-        
         if( capturada != null ){
             tabuleiro.colocaPeca(capturada, destino);
             capturadas.remove( capturada );

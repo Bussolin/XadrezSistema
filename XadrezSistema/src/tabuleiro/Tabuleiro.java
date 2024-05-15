@@ -1,5 +1,6 @@
 package tabuleiro;
 
+import jogo.PecaXadrez;
 import tabuleiro.excecoes.ExcecaoTabuleiro;
 
 public class Tabuleiro {
@@ -18,7 +19,8 @@ public class Tabuleiro {
 
     public Peca removePeca( Posicao pos ){
         if( existePecaNaPosicao( pos ) ){
-            Peca p = pecaTabuleiro( pos );
+            
+            Peca p = (PecaXadrez) pecaTabuleiro( pos );
             p.posicao = null;
             pecas[ pos.getLinha() ][ pos.getColuna() ] = null;
             return p;
