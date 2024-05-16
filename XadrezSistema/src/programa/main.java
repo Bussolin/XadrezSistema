@@ -1,5 +1,6 @@
 package programa;
 
+import java.security.InvalidParameterException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import jogo.PartidaXadrez;
@@ -28,13 +29,16 @@ public class main {
                 PosicaoXadrez destino = InterfaceTabuleiro.lerPosicao(scan);
 
                 jogo.movimentaPecaXadrez( origem, destino );
-            }catch( ExcecaoTabuleiro | InputMismatchException e ){
+                
+                if (jogo.getPromovido() != null){
+                    System.out.println("Peca para promocao: (B/C/T/R)");
+                    String tipoPeca = scan.nextLine();
+                    jogo.trocaPecaPromovida( tipoPeca );
+                }
+            }catch( ExcecaoTabuleiro | InputMismatchException | IllegalStateException | InvalidParameterException e ){
                 System.out.println(e.getMessage());
                 System.out.println("Pressione ENTER para continuar");
                 scan.nextLine();
-                /*for(  StackTraceElement s : e.getStackTrace()){
-                    System.out.println(s.toString() );
-                    }*/
                 }
             }while( !jogo.isCheckmate() );
         InterfaceTabuleiro.clearScreen();

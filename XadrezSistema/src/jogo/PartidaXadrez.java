@@ -1,5 +1,6 @@
 package jogo;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +25,7 @@ public class PartidaXadrez {
     private boolean check;
     private boolean checkmate;
     private PecaXadrez enPasseantVulneravel; 
+    private PecaXadrez promovido;
     
     private List<PecaXadrez> capturadas = new ArrayList<>();
     private List<PecaXadrez> pecasNoTabuleiro = new ArrayList<>();
@@ -63,7 +65,7 @@ public class PartidaXadrez {
         colocaNovaPeca('a', 7 ,new Peao( Cor.PRETA, tabuleiro, this ) );
         colocaNovaPeca('b', 7 ,new Peao( Cor.PRETA, tabuleiro, this ) );
         colocaNovaPeca('c', 7 ,new Peao( Cor.PRETA, tabuleiro, this ) );
-        colocaNovaPeca('d', 4 ,new Peao( Cor.PRETA, tabuleiro, this ) );
+        colocaNovaPeca('d', 7 ,new Peao( Cor.PRETA, tabuleiro, this ) );
         colocaNovaPeca('e', 7 ,new Peao( Cor.PRETA, tabuleiro, this ) );
         colocaNovaPeca('f', 7 ,new Peao( Cor.PRETA, tabuleiro, this ) );
         colocaNovaPeca('g', 7 ,new Peao( Cor.PRETA, tabuleiro, this ) );
@@ -161,8 +163,9 @@ public class PartidaXadrez {
   
         if(verificaCheck(jogadorTurno)){
             desfazMovimento(origem, destino, pecaCapturada);
-            throw new ExcecaoXadrez("Jogada invalida: o rei esta em check");
+            throw new ExcecaoXadrez("Jogada invalida: o rei esta/estara em check");
         }
+        
         if(verificaCheckMate( corOponente(jogadorTurno)) ){
             checkmate = true;
         }else{
@@ -192,24 +195,27 @@ public class PartidaXadrez {
            tabuleiro.colocaPeca(torre, destinoTorre);
            torre.aumentaContagem();
         }
-
-        if( p instanceof Peao 
-                    && origem.getColuna() != destino.getColuna() 
-                    && capturada == null){
-            switch( p.getCor() ){
-                case BRANCA -> capturada = tabuleiro.removePeca( new Posicao(destino.getLinha() + 1, destino.getColuna() ) );
-                case PRETA -> capturada = tabuleiro.removePeca( new Posicao(destino.getLinha() - 1, destino.getColuna() ) );
+        
+        if( p instanceof Peao){
+            //enPasseant
+            if( destino.getLinha() == origem.getLinha() + 2 || destino.getLinha() == origem.getLinha() - 2){
+                enPasseantVulneravel = p;
+            }else{
+                enPasseantVulneravel = null;
             }
-            
+            if( origem.getColuna() != destino.getColuna() 
+                    && capturada == null){
+                switch( p.getCor() ){
+                    case BRANCA -> capturada = tabuleiro.removePeca( new Posicao(destino.getLinha() + 1, destino.getColuna() ) );
+                    case PRETA -> capturada = tabuleiro.removePeca( new Posicao(destino.getLinha() - 1, destino.getColuna() ) );
+                }
+            }
+            //promocao
+            if( destino.getLinha() == tabuleiro.getLinhas() - 1 || destino.getLinha() == 0 ){
+                promovido = p;
+            }
         }
-        
-        if( p instanceof Peao 
-                && (destino.getLinha() == origem.getLinha() + 2 || destino.getLinha() == origem.getLinha() - 2) ){
-            enPasseantVulneravel = p;
-        }else{
-            enPasseantVulneravel = null;
-        }
-        
+
         return capturada;
     }
     
@@ -272,6 +278,32 @@ public class PartidaXadrez {
         pecasNoTabuleiro.add( peca );
     }
     
+    public PecaXadrez trocaPecaPromovida( String tipoPeca){
+        if( promovido == null){
+            throw new IllegalStateException("Nao ha peca para ser promovida");
+        }
+        if( !tipoPeca.equals("C") && !tipoPeca.equals("B") && !tipoPeca.equals("T") && !tipoPeca.equals("R") ){
+            throw new InvalidParameterException("Tipo de peca nao reconhecida");
+        }
+        pecasNoTabuleiro.remove(promovido);
+        Posicao peao = promovido.getPosicaoXadrez().conversaoPosicao();
+        Peca p = tabuleiro.removePeca(peao);
+        
+        PecaXadrez pecaPromovida;
+        Cor corPromovido = promovido.getCor();
+        switch( tipoPeca.toUpperCase() ){
+            case "B" -> pecaPromovida = new Bispo( corPromovido, tabuleiro );
+            case "C" -> pecaPromovida = new Cavalo( corPromovido, tabuleiro );
+            case "T" -> pecaPromovida = new Torre( corPromovido, tabuleiro );
+            case "R" -> pecaPromovida = new Rainha( corPromovido, tabuleiro );
+            default -> throw new InvalidParameterException("Tipo de peca nao reconhecida");
+        }
+        tabuleiro.colocaPeca(pecaPromovida, peao);
+        pecasNoTabuleiro.add( pecaPromovida );
+        
+        return pecaPromovida;
+    }
+    
     public PecaXadrez[][] getPecas(){
        PecaXadrez[][] matriz = new PecaXadrez[tabuleiro.getLinhas()][tabuleiro.getColunas()];
        for( int i = 0; i<tabuleiro.getLinhas();i++){
@@ -281,7 +313,11 @@ public class PartidaXadrez {
        }
        return matriz;
     }
-    
+
+    public PecaXadrez getPromovido() {
+        return promovido;
+    }
+
     public int getTurno() {
         return turno;
     }
