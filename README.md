@@ -10,6 +10,8 @@ Funções:
 
 Feito o sistema com base no arquivo abaixo:
 [projeto-sistema-xadrez](https://github.com/Bussolin/XadrezSistema/files/15337029/10-projeto-sistema-xadrez.1.pdf)
-Visualização inicial do programa ![visualizacaoXadrez](https://github.com/Bussolin/XadrezSistema/assets/152565968/c51b98ad-8550-4e7c-bdab-0bb39f195a16)
+
+Visualização inicial do programa: 
+![visualizacaoXadrez](https://github.com/Bussolin/XadrezSistema/assets/152565968/c51b98ad-8550-4e7c-bdab-0bb39f195a16)
 
 Muito importante para um primeiro contato com um projeto de uma escala maior que os exercícios propostos do curso!
